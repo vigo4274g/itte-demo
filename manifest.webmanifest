@@ -1,0 +1,15 @@
+{
+  "name": "ITTE（一手）｜商談サポート",
+  "short_name": "ITTE",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "ja",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1d24",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

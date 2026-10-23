@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ITTE（一手）｜商談サポート</title>
+<meta name="theme-color" content="#1a1d24">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ITTE">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<!-- 日柱の干支 = (ユリウス通日JDN + 49) mod 60  ／ 0=甲子。2026-01-01=乙亥・2026-06-18=癸亥・2000-01-01=戊午 で検算済み（独立3ソース一致） -->
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f6f7f9;color:#14161a;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:430px;margin:0 auto;padding:12px 12px 100px}
+header{height:54px;background:#1a1d24;color:#fff;border-radius:18px 18px 0 0;padding:0 16px;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;box-shadow:0 6px 18px rgba(17,20,28,.16)}
+header b{font-size:20px;letter-spacing:3px;text-align:center;font-weight:600;color:#fff}
+:root{
+--calendar:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M7 3v3m10-3v3M4.5 9h15M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm2.5 8h.01m3.49 0h.01m3.49 0h.01M8.5 17h.01m3.49 0h.01'/%3E%3C/svg%3E");
+--user:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0'/%3E%3C/svg%3E");
+--message:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.4' d='M4 5h16v11H9l-5 4V5Zm5 5h.01M12 10h.01M15 10h.01'/%3E%3C/svg%3E");
+--hourglass:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M7 3h10M7 21h10M8 3c0 4 2.5 5.5 4 7 1.5-1.5 4-3 4-7M8 21c0-4 2.5-5.5 4-7 1.5 1.5 4 3 4 7M9 11h6'/%3E%3C/svg%3E");
+--shield:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M12 3 19 6v5.2c0 4.3-2.8 7.8-7 9.8-4.2-2-7-5.5-7-9.8V6l7-3Zm-3 9 2 2 4-5'/%3E%3C/svg%3E");
+--person:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 21a7.5 7.5 0 0 1 10.2-7m2.3 1 3 1.2V19c0 2-1.2 3.3-3 4-1.8-.7-3-2-3-4v-2.8l3-1.2Z'/%3E%3C/svg%3E");
+--megaphone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M4 13h3l9 4V7l-9 4H4v2Zm3 0 1.5 6H11l-1.5-5.2M19 9.5c1.2 1.3 1.2 3.7 0 5'/%3E%3C/svg%3E");
+--alert:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M12 4 21 20H3L12 4Zm0 5v5m0 3h.01'/%3E%3C/svg%3E");
+--light:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M9 18h6m-5 3h4m1.5-6.5c1.2-1 2-2.6 2-4.2a5.5 5.5 0 1 0-11 0c0 1.6.8 3.2 2 4.2.7.6.9 1.2.9 2h5.2c0-.8.2-1.4.9-2Z'/%3E%3C/svg%3E");
+--bookmark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M6 3.8C6 2.8 6.8 2 7.8 2h8.4c1 0 1.8.8 1.8 1.8V22l-6-3.4L6 22V3.8Z'/%3E%3C/svg%3E");
+--home:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z'/%3E%3C/svg%3E");
+--users:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7-1a3 3 0 1 0 0-6M2.5 21a6.5 6.5 0 0 1 13 0M15 14c2.9.2 5 2.3 5.5 5'/%3E%3C/svg%3E");
+--history:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M4 12a8 8 0 1 0 2.3-5.7L4 8.6M4 4v4.6h4.6M12 7v5l3 2'/%3E%3C/svg%3E");
+--settings:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm7.5-2.1.1-2.2-2.2-.8a6.5 6.5 0 0 0-.7-1.7l1-2-1.6-1.6-2 1a6.5 6.5 0 0 0-1.7-.7L11.6 3H9.4l-.8 2.2a6.5 6.5 0 0 0-1.7.7l-2-1-1.6 1.6 1 2a6.5 6.5 0 0 0-.7 1.7l-2.2.8.1 2.2 2.1.8c.2.6.4 1.1.7 1.6l-1 2 1.6 1.6 2-1c.5.3 1.1.5 1.7.7l.8 2.1h2.2l.8-2.1c.6-.2 1.2-.4 1.7-.7l2 1 1.6-1.6-1-2c.3-.5.5-1 .7-1.6l2.1-.8Z'/%3E%3C/svg%3E")
+}
+.ico{display:inline-block;width:24px;height:24px;background:currentColor;-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat}
+.navico,.bell{display:grid;place-items:center;color:#fff;border:0;background:transparent;padding:0;cursor:pointer}
+.navico .ico,.bell .ico{width:28px;height:28px}
+.i-menu{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-width='2.6' d='M4 6h16M4 12h16M4 18h16'/%3E%3C/svg%3E")}
+.i-bell{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M15 17H9m9 0H6c1.5-1.6 2-3.2 2-6a4 4 0 0 1 8 0c0 2.8.5 4.4 2 6ZM10 20h4'/%3E%3C/svg%3E")}
+.i-calendar{--ico:var(--calendar)}.i-user{--ico:var(--user)}.i-message{--ico:var(--message)}.i-hourglass{--ico:var(--hourglass)}.i-shield{--ico:var(--shield)}.i-person{--ico:var(--person)}.i-megaphone{--ico:var(--megaphone)}.i-alert{--ico:var(--alert)}.i-light{--ico:var(--light)}.i-bookmark{--ico:var(--bookmark)}.i-home{--ico:var(--home)}.i-users{--ico:var(--users)}.i-history{--ico:var(--history)}.i-settings{--ico:var(--settings)}
+.panel{background:#fff;border:1px solid #eaebee;border-radius:14px;box-shadow:0 1px 2px rgba(20,22,28,.04)}
+.in{padding:16px 14px 12px;margin:0 10px 8px;border-radius:0 0 14px 14px}
+.in label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#14161a;margin-bottom:12px}
+.in label:before{content:'';display:inline-block;width:22px;height:22px;color:#1a1d24;background:currentColor;-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat;--ico:var(--calendar)}
+.nick{margin-bottom:12px}
+.nick span{display:block;font-size:12px;font-weight:600;color:#6b7280;margin-bottom:5px}
+.nick input{width:100%;font-size:16px;font-weight:500;color:#14161a;border:1px solid #d8dbe0;border-radius:12px;padding:10px 12px;background:#fff}
+.ymd{display:grid;grid-template-columns:1.4fr auto 1fr auto 1fr auto;align-items:center;gap:7px}
+.ymd select{width:100%;font-size:18px;font-weight:500;padding:10px 30px 10px 14px;border:1px solid #d8dbe0;border-radius:12px;background:#fff;color:#14161a;-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,#475569 50%),linear-gradient(135deg,#475569 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 11px) 50%;background-size:8px 8px,8px 8px;background-repeat:no-repeat}
+.ymd .u{font-size:13px;font-weight:600;color:#475569}
+.opt2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.opt2 select{width:100%;font-size:15px;font-weight:500;padding:10px 30px 10px 12px;border:1px solid #d8dbe0;border-radius:12px;background:#fff;color:#14161a;-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,#475569 50%),linear-gradient(135deg,#475569 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 11px) 50%;background-size:8px 8px,8px 8px;background-repeat:no-repeat}
+.exmeta{display:flex;gap:6px;margin:0 0 10px}
+.exmeta span{font-size:12px;font-weight:600;color:#475569;background:#f1f2f4;border-radius:7px;padding:4px 10px}
+.bloodtalk{background:#eef4f9;border:1px solid #d7e6f1;border-radius:11px;padding:10px 12px;margin:0 0 12px;font-size:12.5px;color:#2f6e92;line-height:1.55}
+.bloodtalk b{display:block;font-size:11px;color:#2f6e92;margin-bottom:3px;font-weight:700}
+.diag-btn{width:100%;margin-top:12px;height:46px;border:0;border-radius:10px;background:#1a1d24;color:#fff;font-size:15px;font-weight:600;letter-spacing:.02em;cursor:pointer}
+.diag-btn:active{opacity:.9}
+.memo-box{margin-top:9px;background:#f6f7f9;border:1px solid #eaebee;border-radius:11px;padding:11px 13px}
+.memo-h{font-size:11px;font-weight:600;color:#6b7280;margin-bottom:4px}
+.memo-x{font-size:13px;color:#14161a;line-height:1.6;white-space:pre-wrap}
+.ai-head{background:#1a1d24;color:#fff;border-radius:13px;padding:12px 14px;margin:8px 0 10px}
+.ai-title{font-size:14px;font-weight:600}
+.ai-ctx{font-size:11.5px;color:#cfe8f7;margin-top:3px}
+.ai-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.ai-chip{font-size:12px;font-weight:600;padding:7px 11px;border:1px solid #cfe8f7;background:#f2f9fd;color:#2f7bb0;border-radius:999px;cursor:pointer}
+.ai-msgs{display:flex;flex-direction:column;gap:8px;margin-bottom:11px}
+.ai-bub{max-width:85%;font-size:13px;line-height:1.6;padding:10px 12px;border-radius:13px}
+.ai-bub.ai{align-self:flex-start;background:#fff;border:1px solid #eaebee;color:#14161a;border-bottom-left-radius:4px}
+.ai-bub.me{align-self:flex-end;background:#1a1d24;color:#fff;border-bottom-right-radius:4px}
+.ai-input{display:flex;gap:7px}
+.ai-input input{flex:1;font-size:14px;padding:10px 12px;border:1px solid #d8dbe0;border-radius:10px;background:#fff;color:#14161a}
+.ai-send{font-size:13px;font-weight:600;padding:0 14px;border:0;border-radius:10px;background:#2f7bb0;color:#fff;cursor:pointer}
+.out{background:transparent;border:0;padding:0 10px 0}
+.kanshi{display:flex;align-items:center;gap:18px;padding:14px;margin:8px 0 12px;background:#fff;border-radius:14px;border:1px solid #eaebee;box-shadow:0 1px 2px rgba(20,22,28,.04)}
+.kanshi .k{display:grid;place-items:center;min-width:64px;height:64px;border:1.5px solid #1a1d24;border-radius:50%;font-size:24px;font-weight:600;color:#14161a;letter-spacing:1px;line-height:1}
+.kanshi .t{display:flex;align-items:center;gap:12px;font-size:14px;color:#14161a;font-weight:500;white-space:nowrap}
+.kanshi .tag{display:inline-block;font-size:12px;background:#f1f2f4;color:#475569;border-radius:7px;padding:5px 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.cell{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr) 16px;align-items:center;gap:8px;min-height:64px;background:#fff;border-radius:12px;padding:10px;cursor:pointer;border:1px solid #eaebee;box-shadow:0 1px 2px rgba(20,22,28,.04)}
+.cell:before{content:'';display:block;width:38px;height:38px;border-radius:50%;background-color:#f1f2f4;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:center;background-size:25px 25px;color:#1a1d24;-webkit-mask:none;mask:none}
+.cell:before{background-image:none}
+.cell:after{content:'›';font-size:30px;color:#9aa1ad;line-height:1}
+.cell .l:before{content:'';position:absolute;left:19px;top:50%;width:22px;height:22px;transform:translateY(-50%);background:#1a1d24;-webkit-mask:var(--cell-icon) center/contain no-repeat;mask:var(--cell-icon) center/contain no-repeat;pointer-events:none}
+.cell[data-l="話し方"] .l:before{--cell-icon:var(--message)}
+.cell[data-l="決断テンポ"] .l:before{--cell-icon:var(--hourglass)}
+.cell[data-l="意思決定"] .l:before{--cell-icon:var(--shield)}
+.cell[data-l="距離感"] .l:before{--cell-icon:var(--person)}
+.cell.on{border-color:#1a1d24;background:#f6f7f9}
+.cell .l{font-size:13px;color:#6b7280;line-height:1.25;white-space:nowrap}
+.cell .l .more{display:none}
+.cell .v{font-size:16px;font-weight:600;color:#14161a;margin-top:1px;line-height:1.25;word-break:keep-all;overflow-wrap:normal}
+.detail{background:#fff;border:1px solid #e6e8ec;border-radius:12px;padding:11px 13px;margin:2px 0 10px;display:none}
+.detail .dl{font-size:12px;font-weight:600;color:#1a1d24;margin-bottom:4px}
+.detail .dx{font-size:13px;line-height:1.65;color:#374151}
+.blk{position:relative;display:grid;grid-template-columns:50px 1fr;gap:10px;align-items:center;border:0;border-radius:11px;padding:13px;margin-top:9px;box-shadow:none}
+.blk:before{content:'';display:block;width:42px;height:42px;border-radius:50%;background:#fff}
+.blk:after{content:'';position:absolute;left:19px;top:50%;width:26px;height:26px;transform:translateY(-50%);background:var(--blk-color);-webkit-mask:var(--blk-icon) center/contain no-repeat;mask:var(--blk-icon) center/contain no-repeat}
+.blk .l{font-size:14px;font-weight:600;margin-bottom:4px}
+.blk .x{font-size:14px;line-height:1.6;color:#36404a}
+.b1{background:#eff4f9;--blk-icon:var(--megaphone);--blk-color:#2f6e92}.b1 .l{color:#2f6e92}
+.b2{background:#fbeeec;--blk-icon:var(--alert);--blk-color:#b0564e}.b2 .l{color:#a8473f}
+.b3{background:#fbf3e0;--blk-icon:var(--light);--blk-color:#bb8a2e}.b3 .l{color:#9a7324}
+.deep{margin-top:11px;border:1px solid #eaebee;border-radius:13px;padding:13px;background:#fff;box-shadow:0 1px 2px rgba(20,22,28,.04)}
+.deep-h{font-size:13px;font-weight:600;color:#14161a;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.deep-pro{font-size:10px;color:#a87c32;border:1px solid #e6d3a6;border-radius:999px;padding:2px 8px;font-weight:500}
+.layer{border:1px solid #eef0f2;border-radius:10px;padding:9px 11px;margin-bottom:8px}
+.layer-t{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:500;color:#475569;margin-bottom:5px}
+.layer-t .layer-k{margin-left:auto;font-size:10px;color:#9aa1ad;font-weight:400}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.dot.blue{background:#5878a0}.dot.gold{background:#a87c32}
+.layer-a{font-size:13px;font-weight:600;color:#14161a;margin-bottom:2px}
+.layer-c{font-size:11.5px;color:#6b7280;line-height:1.5}
+.layer[data-ld]{cursor:pointer}
+.layer.on{border-color:#cbd2dc}
+.layer-detail{margin-top:8px;padding-top:8px;border-top:1px dashed #e6e8ec;font-size:12px;color:#374151;line-height:1.75}
+.layer-detail b{font-weight:600;color:#1a1d24}
+.deep-gap{background:#fbf3e0;border:1px solid #ecdcb4;border-radius:10px;padding:9px 11px;margin:2px 0 10px}
+.deep-gap-l{font-size:10.5px;font-weight:600;color:#9a7324;margin-bottom:3px}
+.deep-gap-x{font-size:12px;color:#4d4124;line-height:1.5}
+.deep-match{background:#eef4ec;border:1px solid #d6e4d2;border-radius:10px;padding:9px 11px;margin:2px 0 10px;font-size:12px;color:#3a5a36;line-height:1.5}
+.strat-r{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px;font-size:12.5px;color:#14161a;line-height:1.5}
+.strat-r:last-child{margin-bottom:0}
+.strat-l{flex:none;width:64px;font-size:11px;font-weight:600}
+.strat-l.blue{color:#5878a0}.strat-l.gold{color:#a87c32}.strat-l.dark{color:#14161a}
+.apchips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.apx{font-size:10.5px;background:#f1f2f4;color:#475569;border-radius:5px;padding:2px 8px}
+.apx.warn{background:#fbf3e0;color:#9a7324;font-weight:500}
+.appt-input{width:100%;font-size:15px;padding:10px 12px;border:1px solid #d8dbe0;border-radius:10px;color:#14161a;background:#fff;margin-bottom:9px}
+.actions{padding:8px 0 10px}
+.act{display:block;width:100%;height:42px;border-radius:9px;font-size:15px;font-weight:600;letter-spacing:.02em}
+.act:before{content:'';display:inline-block;width:20px;height:20px;margin-right:8px;vertical-align:-4px;background:currentColor;-webkit-mask:var(--act-icon) center/contain no-repeat;mask:var(--act-icon) center/contain no-repeat}
+.act.primary{--act-icon:var(--message)}
+.act.secondary{--act-icon:var(--bookmark)}
+.act.primary{border:0;background:#1a1d24;color:#fff}
+.act.secondary{margin-top:8px;border:1px solid #d8dbe0;background:#fff;color:#1a1d24}
+.act.aigo{--act-icon:var(--message);border:0;background:#2f7bb0;color:#fff;margin-bottom:10px}
+.act.gopro{--act-icon:var(--bookmark);border:0;background:#9a7324;color:#fff}
+.lockcard{border:1px dashed #c9ad6a;background:#fbf8f0}
+.lockcard .lh{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.lockcard .lh b{font-size:15px;color:#1a1d24}
+.lockcard .pill{margin-left:auto;font-size:11px;font-weight:700;color:#9a7324;border:1px solid #c9ad6a;border-radius:999px;padding:2px 9px;background:#fff}
+.lockcard p{color:#6b7280;font-size:13px;margin:2px 0 10px}
+.lead{font-size:12px;color:#9a7324;text-align:center;margin:6px 0 12px}
+.hero{background:#eff4f9;border:1px solid #d7e6f1;border-radius:14px;padding:14px 16px;margin:2px 0 14px}
+.hero-l{font-size:12px;color:#2f6e92;margin-bottom:6px}
+.hero-x{font-size:17px;font-weight:600;line-height:1.55;color:#16242f}
+.typechip{width:100%;display:flex;align-items:center;justify-content:space-between;background:#f6f7f9;border:1px solid #e2e4e8;border-radius:11px;padding:11px 13px;cursor:pointer;font-family:inherit;font-size:13px;color:#3a3d44;margin-bottom:10px}
+.typechip .tc-c{font-size:14px;color:#8a8d92}
+.kanshi-mini{grid-column:1/-1;font-size:11px;color:#9a9da3;text-align:center;padding:5px 0 1px}
+.win{background:#fbf8f0;border:1px solid #e7d9b6;border-radius:14px;padding:13px 15px;margin-top:12px}
+.win-q{font-size:14px;font-weight:600;margin-bottom:10px;color:#1a1d24}
+.win-b{display:flex;gap:9px}
+.wbtn{flex:1;height:40px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.wbtn.yes{background:#0f6e56;color:#fff;border:0}
+.wbtn.no{background:#fff;color:#5f5e5a;border:1px solid #d8dbe0}
+.win-n{font-size:11px;color:#8a7a4a;margin-top:9px}
+.rebar{margin:2px 0 12px}
+.redo{width:100%;font-size:14px;font-weight:600;color:#1a1d24;background:#fff;border:1.5px solid #1a1d24;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit}
+.appt-ymd{display:flex;gap:6px;align-items:center;font-size:14px;margin-bottom:10px;color:#475569}
+.appt-ymd select{flex:1;height:40px;border:1px solid #d3d7de;border-radius:9px;padding:0 8px;font:inherit;font-size:15px;color:#14161a;background:#fff}
+.toprow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.tchip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#f6f7f9;border:1px solid #e2e4e8;border-radius:12px;padding:10px 12px;cursor:pointer;font-family:inherit;text-align:left}
+.tchip-l{font-size:13px;font-weight:600;color:#1a1d24}
+.tchip-s{font-size:11px;color:#7a7d83}
+.tchip-c{position:absolute;right:10px;top:10px;font-size:13px;color:#8a8d92}
+.pro-mini{font-size:10px;font-weight:700;color:#9a7324;background:#fbf3e0;border-radius:5px;padding:1px 5px;margin-left:5px;vertical-align:1px}
+.fold-h{width:100%;display:flex;align-items:center;justify-content:space-between;background:none;border:0;font-family:inherit;font-size:15px;font-weight:600;color:#14161a;cursor:pointer;padding:0}
+.fold-h .fc{font-size:14px;color:#8a8d92}
+.cust-meta{font-size:13px;color:#475569;margin:0 0 11px}
+#detailMemo{width:100%;min-height:130px;border:1px solid #d3d7de;border-radius:10px;padding:11px;font:inherit;font-size:14px;line-height:1.7;color:#14161a;resize:vertical}
+.appt-item{position:relative}
+.appt-del{display:block;margin:10px 0 0 auto;width:-moz-fit-content;width:fit-content;font-size:12px;color:#a32d2d;background:#fff;border:1px solid #eecaca;border-radius:7px;padding:6px 14px;cursor:pointer}
+.rv-q{font-size:13px;font-weight:600;color:#344052;margin:10px 0 6px}
+.rv-log{margin-top:12px;border-top:1px solid #eef0f2;padding-top:10px}
+.rv-item{font-size:13px;color:#1a1d24;padding:6px 0;border-bottom:1px solid #f3f4f6}
+.rv-date{color:#9aa0a6;font-size:11px;margin-left:8px}
+.rv-note{color:#6b7280;font-size:12px;margin-top:2px}
+#fbText,#rvNote{width:100%;min-height:80px;border:1px solid #d3d7de;border-radius:10px;padding:11px;font:inherit;font-size:14px;line-height:1.6;color:#14161a;box-sizing:border-box;margin:6px 0;resize:vertical}
+.hist-save{margin-top:9px;font-size:12px;font-weight:600;color:#1a1d24;background:#fff;border:1px solid #d8dbe0;border-radius:8px;padding:7px 12px;cursor:pointer}
+footer{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;gap:4px;padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #eef0f2;box-shadow:0 -3px 14px rgba(20,22,28,.08);z-index:15;overflow:visible}
+footer span{display:grid;place-items:center;gap:2px;font-size:10px;font-weight:600;color:#9aa1ad;cursor:pointer}
+footer span:before{content:'';display:block;width:22px;height:22px;background:currentColor;-webkit-mask:var(--foot-icon) center/contain no-repeat;mask:var(--foot-icon) center/contain no-repeat}
+footer span.active{color:#a87c32}
+footer span:nth-child(1){--foot-icon:var(--home)}
+footer span:nth-child(2){--foot-icon:var(--calendar)}
+footer span:nth-child(4){--foot-icon:var(--users)}
+footer span:nth-child(5){--foot-icon:var(--history)}
+footer span.ai{color:#3a7ca5}
+footer span.ai:before{width:50px;height:50px;border-radius:50%;margin-top:-22px;background-color:#cfe8f7;-webkit-mask:none;mask:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232f7bb0'%3E%3Cpath d='M11 2.6l1.5 4.2 4.2 1.5-4.2 1.5L11 14l-1.5-4.2L5.3 8.3l4.2-1.5z'/%3E%3Cpath d='M18 13l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z'/%3E%3C/svg%3E");background-size:30px;background-position:center;background-repeat:no-repeat;border:3px solid #fff;box-shadow:0 3px 10px rgba(47,123,176,.3)}
+footer span.ai.active{color:#2f7bb0}
+.view{padding:2px 0 10px}
+.view-card{background:#fff;border:1px solid #eaebee;border-radius:12px;padding:13px;margin:8px 0;box-shadow:0 1px 2px rgba(20,22,28,.04)}
+.view-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.view-card h2{font-size:17px;line-height:1.35;margin:0;color:#14161a;font-weight:600}
+.view-card p{font-size:13px;line-height:1.65;margin:0;color:#596273}
+.mini{height:32px;border-radius:8px;border:1px solid #d8dbe0;background:#fff;color:#1a1d24;font-size:12px;font-weight:600;padding:0 10px}
+.mini.danger{border-color:#e9c3bf;color:#a8473f}
+.mini.primary{border-color:#1a1d24;background:#1a1d24;color:#fff}
+.list{display:grid;gap:8px;margin-top:10px}
+.item{position:relative;border:1px solid #ebedf0;border-radius:10px;padding:10px;background:#fcfcfd;cursor:pointer}
+.item.selected{border-color:#1a1d24;background:#f6f7f9}
+.item.checkable{padding-left:42px}
+.item.checkable:before{content:'';position:absolute;left:12px;top:18px;width:18px;height:18px;border:2px solid #c2c8d0;border-radius:6px;background:#fff}
+.item.selected:before{border-color:#1a1d24;background:#1a1d24}
+.item.selected:after{content:'';position:absolute;left:18px;top:22px;width:6px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.item .top{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#6b7280;margin-bottom:5px}
+.item .main{font-size:15px;font-weight:600;color:#14161a;line-height:1.4}
+.item .sub{font-size:12px;color:#596273;line-height:1.55;margin-top:5px}
+.detail-card textarea{width:100%;min-height:110px;resize:vertical;border:1px solid #d3d7de;border-radius:10px;padding:10px;font:inherit;font-size:14px;color:#14161a;line-height:1.6;margin-top:8px}
+.note-list{display:grid;gap:6px;margin-top:8px}
+.note{font-size:12px;line-height:1.55;color:#344052;background:#f6f7f9;border-radius:8px;padding:8px}
+.empty{padding:18px 8px;text-align:center;color:#9aa1ad;font-size:13px}
+.modal{position:fixed;inset:0;z-index:20;display:none;align-items:flex-end;justify-content:center;background:rgba(20,22,28,.4);padding:16px}
+.modal.show{display:flex}
+.sheet{width:100%;max-width:430px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 18px 40px rgba(20,22,28,.22)}
+.sheet h2{font-size:18px;margin:0 0 8px;color:#14161a;font-weight:600}
+.sheet .hint{font-size:12px;color:#6b7280;margin:0 0 10px}
+.notice-body{max-height:48vh;overflow:auto;margin:2px 0 4px}
+.notice-body p{font-size:13px;line-height:1.7;color:#36404a;margin:0 0 9px}
+.sheet textarea{width:100%;min-height:160px;resize:vertical;border:1px solid #d3d7de;border-radius:10px;padding:10px;font:inherit;font-size:14px;color:#14161a;line-height:1.6}
+.menu-list{display:grid;gap:8px;margin-top:10px}
+.menu-item{border:1px solid #ebedf0;border-radius:10px;background:#fcfcfd;padding:11px;text-align:left}
+.menu-item b{display:block;font-size:14px;color:#14161a;margin-bottom:2px}
+.menu-item span{display:block;font-size:12px;color:#6b7280;line-height:1.45}
+.plan-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.plan-row button{height:36px;border-radius:8px;border:1px solid #d8dbe0;background:#fff;color:#1a1d24;font-size:13px;font-weight:600}
+.plan-row button.active{background:#1a1d24;color:#fff;border-color:#1a1d24}
+.sheet-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.small-btn{height:38px;border-radius:8px;font-size:14px;font-weight:600}
+.small-btn.primary{border:0;background:#1a1d24;color:#fff}
+.small-btn.ghost{border:1px solid #d8dbe0;background:#fff;color:#344052}
+.toast{position:fixed;left:50%;bottom:18px;z-index:30;transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;background:#1a1d24;color:#fff;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:500;box-shadow:0 10px 24px rgba(20,22,28,.25);transition:.2s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:380px){.wrap{padding:12px 8px 20px}.in{margin-left:6px;margin-right:6px;padding-left:12px;padding-right:12px}.ymd{grid-template-columns:1.25fr auto .82fr auto .82fr auto;gap:5px}.ymd select{font-size:15px;padding:9px 22px 9px 9px;background-position:calc(100% - 14px) 50%,calc(100% - 8px) 50%;background-size:7px 7px,7px 7px}.ymd .u{font-size:12px}.ex{gap:10px}.ex button{font-size:12px}.cell{grid-template-columns:34px minmax(0,1fr) 12px;gap:6px;padding:9px;min-height:72px}.cell:before{width:32px;height:32px;font-size:18px}.cell .l:before{left:14px;width:20px;height:20px}.cell:after{font-size:25px}.cell .l{font-size:11px}.cell .v{font-size:14px}.kanshi{gap:12px;padding:10px}.kanshi .k{min-width:58px;height:58px;font-size:22px}.kanshi .t{font-size:13px;gap:8px}.kanshi .tag{font-size:12px;padding:5px 8px}.blk .x{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><button class="bell" type="button" data-action="open-notice"><i class="ico i-bell"></i></button><b>ITTE</b><button class="navico" type="button" data-action="open-settings"><i class="ico i-settings"></i></button></header>
+  <div class="tagline" style="text-align:center;color:#9a7324;font-size:12.5px;font-weight:600;letter-spacing:.06em;margin:9px 0 3px">初対面の、最初の一手。</div>
+  <div class="in panel">
+    <label>お客さまの生年月日</label>
+    <div class="nick"><span>ニックネーム</span><input id="nickname" type="text" placeholder="例：Aさん"></div>
+    <div class="ymd">
+      <select id="yy"></select><span class="u">年</span>
+      <select id="mm"></select><span class="u">月</span>
+      <select id="dd"></select><span class="u">日</span>
+    </div>
+    <div class="opt2">
+      <select id="sex"><option value="">性別（任意）</option><option value="男性">男性</option><option value="女性">女性</option></select>
+      <select id="blood"><option value="">血液型（任意）</option><option value="A">A型</option><option value="B">B型</option><option value="O">O型</option><option value="AB">AB型</option></select>
+    </div>
+    <p class="diag-lead" style="text-align:center;color:#6b7280;font-size:12px;margin:4px 0 9px">生年月日から、最初の一手を。</p>
+    <button id="diagBtn" class="diag-btn" type="button">この生年月日で診断</button>
+  </div>
+  <div class="out" id="out"></div>
+  <footer><span class="active" data-view="home">ホーム</span><span data-view="appts">アポ</span><span class="ai" data-view="ai">AI</span><span data-view="customers">お客様一覧</span><span data-view="history">履歴</span></footer>
+</div>
+<div class="modal" id="memoModal" aria-hidden="true">
+  <div class="sheet">
+    <h2>商談メモ</h2>
+    <p class="hint">お客さまの反応、次回確認すること、気になった一言を残せます。</p>
+    <textarea id="memoText" placeholder="例：保障内容より月額負担を気にしていた。次回は比較表を見せる。"></textarea>
+    <div class="sheet-actions"><button class="small-btn ghost" type="button" data-action="close-memo">閉じる</button><button class="small-btn primary" type="button" data-action="keep-memo">メモを反映</button></div>
+  </div>
+</div>
+<div class="modal" id="menuModal" aria-hidden="true">
+  <div class="sheet">
+    <h2>メニュー</h2>
+    <p class="hint">各種案内をここから確認できます。</p>
+    <div class="menu-list">
+      <button class="menu-item" type="button" data-action="plan-info"><b>プラン変更</b><span>Free / Pro / Team の切り替えを想定した画面です。</span></button>
+      <button class="menu-item" type="button" data-action="terms-info"><b>利用規約</b><span>サービス利用時の注意事項と免責事項を確認します。</span></button>
+      <button class="menu-item" type="button" data-action="privacy-info"><b>プライバシーポリシー</b><span>保存データや個人情報の扱いを確認します。</span></button>
+      <button class="menu-item" type="button" data-action="help-info"><b>ヘルプ</b><span>使い方、保存、削除、メモ更新の説明を確認します。</span></button>
+    </div>
+    <div class="sheet-actions"><button class="small-btn ghost" type="button" data-action="close-menu">閉じる</button><button class="small-btn primary" type="button" data-action="plan-info">プランを見る</button></div>
+  </div>
+</div>
+<div class="modal" id="noticeModal" aria-hidden="true">
+  <div class="sheet">
+    <h2>ご利用にあたって</h2>
+    <div class="notice-body">
+      <p>ITTE（一手）は、生年月日から相手の傾向を読んで<b>「初対面の会話のきっかけ」</b>を作る営業サポートです。相手を言い当てるものではありません。</p>
+      <p>表示される内容は<b>傾向（仮説）</b>です。お客様を決めつけず、<b>最終的な判断は営業担当者ご自身</b>で行ってください。</p>
+      <p>ご提案の際は<b>断定的・誇大な表現を避け</b>、正確な情報提供を心がけてください。言い回しもそのまま使わず、状況に合わせて調整してください。</p>
+      <p>入力した生年月日・メモ等は<b>お使いの端末内にのみ保存</b>され、外部には送信されません。</p>
+      <p>本ツールは営業担当者の<b>“裏側のメモ”</b>です。お客様に結果をそのまま提示する用途は想定していません。</p>
+    </div>
+    <div class="sheet-actions"><button class="small-btn primary" type="button" data-action="close-notice">閉じる</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+  var OLD_STORE_KEY='eii_sales_cards_v1';
+  var CUSTOMERS_KEY='eii_customers_v2';
+  var HISTORY_KEY='eii_history_v2';
+  var currentProfile=null,currentMemo='',currentView='home',deleteMode=false,selectedIds=[],aiMessages=[];
+  var currentExtra={sex:'',blood:''};
+  function getExtra(){return {sex:(document.getElementById('sex')||{}).value||'',blood:(document.getElementById('blood')||{}).value||''};}
+  var BLOOD_TALK={'A':'几帳面・誠実と言われがち。「きっちりされてますよね」が会話の入口に。','B':'マイペース・発想型と言われがち。「自分のペース、大事にされますよね」が入口に。','O':'おおらか・親分肌と言われがち。「おおらかですよね」と受けると和みます。','AB':'多面的・個性派と言われがち。「掴みどころのなさが魅力ですよね」が入口に。'};
+  var TRIAL_KEY='eii_trial_start',TRIAL_DAYS=7;
+  function trialStart(){var t=localStorage.getItem(TRIAL_KEY);if(!t){t=String(Date.now());localStorage.setItem(TRIAL_KEY,t);}return +t;}
+  function trialLeft(){var ms=trialStart()+TRIAL_DAYS*86400000-Date.now();return ms>0?Math.ceil(ms/86400000):0;}
+  function trialActive(){return trialLeft()>0;}
+  function proSince(){var t=localStorage.getItem('eii_pro_since');return t?+t:0;}
+  function nextRenewalDate(){var s=proSince();if(!s)return null;var d=new Date(s),now=new Date(),g=0;while(d<=now&&g<240){d.setMonth(d.getMonth()+1);g++;}return d;}
+  function fmtRenewal(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';}
+  var STEMS=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+  var BR=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  var GOGYOU=['木','火','土','金','水'];
+  var GROUP=['正','墓','生','正','墓','生','正','墓','生','正','墓','生'];
+  var TALK={'正':'結論ベース','墓':'感情ベース','生':'ビジョンベース'};
+  var BUTTON=['成長・家族','承認・楽しさ','安心・安定','損得・合理','納得・知識'];
+  var TALK6={'正0':'結論ストレート型','正1':'結論・整理型','墓0':'感情・安定型','墓1':'感情・寄り添い型','生0':'ビジョン・行動型','生1':'ビジョン・洞察型'};
+  var KET6={'0a':'即断・推進型','1a':'前向き熟考型','0b':'どっしり即決型','1b':'着実・安定型','0c':'合理・即断型','1c':'熟考・吟味型'};
+  var BTN10=['成長・拡大','家族・着実','承認・華やかさ','信頼・温かさ','安心・どっしり','堅実・実利','損得・メリット','価値・品質','自由・知的','納得・情報'];
+  var TSU_T={
+    '結論ベース':['「結論から、要点だけ3分でお話しします」','「先に結論をお伝えすると、今日はここだけ見てください」','「細かい話の前に、メリットと注意点を一枚で整理します」','「時間を取らせないように、判断材料だけ先にお渡しします」','「最初におすすめと理由をお伝えして、合わなければすぐ止めます」','「今日は“必要かどうか”だけ判断できるように話します」','「まず全体像を30秒でお見せします。そのあと気になる所だけ見ましょう」','「良い点だけでなく、向かないケースも先に話します」','「いくつも出すと迷うので、候補は絞って持ってきました」','「今日決める話ではなく、判断軸を作る時間にしましょう」'],
+    '感情ベース':['「売り込みは一旦置いて、今の状況だけ聞かせてください」','「まず、最近どんなことが気になっているかだけ教えてください」','「無理に決める話ではないので、今の不安から一緒に整理しましょう」','「今日は提案より先に、お考えをちゃんと聞かせてください」','「今すぐ必要かより、何が心配かから聞かせてもらえますか」','「ご家族のことも含めて、気になっている所からで大丈夫です」','「合う合わないは後でいいので、まず今の率直な気持ちを聞きたいです」','「難しい話にするつもりはないので、普段の感覚で話してください」','「ここは人によって正解が違うので、生活に合う形を一緒に探しましょう」','「不安を煽る話ではなく、安心できる形を確認する時間にしましょう」'],
+    'ビジョンベース':['「“将来こうなれたら理想”という話から始めませんか」','「これから先、どんな暮らしを守りたいかから一緒に考えましょう」','「今日の話は、未来の選択肢を増やすための整理だと思ってください」','「5年後、10年後に安心している状態を先に描いてみませんか」','「もしもの時も、普段の生活を崩さない形を考えてみましょう」','「将来やりたいことを邪魔しない備え、という見方で見てください」','「細かい商品名より先に、どんな未来を守るかを決めましょう」','「この先の働き方や家族の変化も含めて、ざっくり整理しましょう」','「今の延長で考えるより、先に理想の状態から逆算してみましょう」','「あとで“準備しておいてよかった”と思える形を一緒に作りましょう」']
+  };
+  var TSU_M={
+    'オープン型':['距離は近めでOK。早めに本題に入って大丈夫。','反応がよければテンポよく踏み込む。雑談は短めでOK。','軽く共感してから、そのまま具体例に入ると乗りやすい。','相手が話してくれたら、少し大きめに受けて会話を広げる。','明るくテンポよく。細かい確認より先に全体像を見せる。','冗談が通じる空気なら少し柔らかく入ると距離が縮む。','相手の言葉を拾って「それなら」と話をつなげる。','話が弾んでも最後は要点に戻す。脱線しっぱなしにしない。','比較や事例を出すと乗りやすい。実感のある話にする。','クロージングは少し前向きに。「一度ここまで進めましょう」が合う。'],
+    '中間型':['最初は様子を見つつ、反応を見て距離を詰める。','質問はやわらかく。相手の頷きが増えてから提案へ進む。','押しすぎず引きすぎず、確認を挟みながら進める。','最初の5分は相手の温度を見る。急に距離を詰めない。','選択肢は2つまで。反応を見て片方に寄せていく。','「ここまで大丈夫ですか」と小さく確認しながら進める。','資料を見せる前に、関心のある所を一つ聞いておく。','相手が迷ったら、決めるより整理する方向に戻す。','良い反応が出た所を深掘りして、無理に全部説明しない。','最後は「持ち帰る材料」と「次に確認すること」を残す。'],
+    '警戒型':['まず聞き役。“売り込まない”姿勢を最初に見せる。','提案前に安心づくり。相手の言葉を繰り返して受け止める。','最初から商品名を出しすぎない。状況整理に徹すると開きやすい。','こちらから詰めずに、相手のペースで話してもらう。','「今日は決めなくて大丈夫です」を早めに言うと空気が緩む。','メリットより先に、心配されやすい点をこちらから出す。','沈黙を急いで埋めない。考える時間を置いた方が信頼される。','質問は一つずつ。連続で聞くと面接っぽくなる。','強い言葉は避けて、選べる余地を残した言い方にする。','最後は追い込まず、「確認だけしておきましょう」で終える。']
+  };
+  var NG_T={
+    '結論ベース':['長い世間話・回りくどい説明・結論の後回し','資料を順番に全部読む・要点が見えない説明','「念のため」で話を広げすぎる・着地点のない雑談','質問に対して前置きから入る・答えが遅い','メリットを曖昧にする・何が得なのか見えない説明','相手が知りたい順番を無視して、こちらの順番で話す','結論を濁して「場合によります」を連発する','数字や条件を後出しにする','比較なしで「おすすめです」と言い切る','話が長いのに、最後に何をすればいいか残らない'],
+    '感情ベース':['いきなり提案・正論で詰める・感情を置き去りにする','不安を軽く扱う・数字だけで説得しようとする','相手の話を遮る・結論を急がせる','「普通はこうです」と一般論で押す','家族や生活の話を聞かずに商品へ進む','心配ごとに対してすぐ反論する','共感なしにリスクだけ強く言う','相手の迷いを優柔不断扱いする','沈んだ反応を見落として説明を続ける','最後だけ急にクロージングを強める'],
+    'ビジョンベース':['細かい数字の羅列・夢のない事務対応・頭ごなしの否定','リスク説明だけで終わる・未来の良い変化を見せない','現状維持を前提にしすぎる・可能性を狭める言い方','「できません」「難しいです」から入る','将来の話を聞かずに現在の条件だけで決める','細かい約款説明を序盤から詰め込む','夢や希望を現実論だけで潰す','商品の枠に相手を当てはめる','未来のメリットを生活の言葉に直さない','不安対策ばかりで前向きな理由を作らない']
+  };
+  var NG_K={
+    '即断・攻め型':['情報を盛りすぎて迷わせるのも逆効果。','選択肢を増やしすぎると熱が冷める。','クロージングを曖昧にすると「で、結局？」になりやすい。','次の一手を示さないと、その場の勢いが消える。','細かい注意点から入りすぎると話が重くなる。','相手が前のめりな時に、こちらが慎重すぎると噛み合わない。','「検討してください」だけで終えると流れやすい。','おすすめを出さずに全部並べると面倒に感じられる。','話を戻しすぎるとテンポが落ちる。','決める材料が揃った後の長い補足は不要。'],
+    '慎重・熟考型':['即決を迫る・煽り文句は逆効果。','「皆さん決めてます」で押すと警戒されやすい。','不明点を残したまま進めると、後から止まりやすい。','期限を強く出しすぎると逃げたくなる。','メリットだけで押すと裏があるように見える。','資料なしで口頭だけだと不安が残る。','質問を急かすと本音が出にくい。','比較材料を渡さないと判断が止まる。','その場でサインに寄せすぎると信頼を落とす。','「考えすぎです」と言うのは一番よくない。']
+  };
+  var KILL={
+    '成長・家族':['「ご家族のために、“もしも”の安心だけ用意しておきませんか」','「これは自分のためだけでなく、大切な人に迷惑をかけない準備です」','「将来の選択肢を減らさないために、今できる備えを一緒に見ましょう」','「守りたい人がいる方ほど、早めに整えておく価値があります」','「何かあった時に、ご家族が困らない形だけ先に作っておきましょう」','「今の準備が、あとで家族を助ける場面はあります」','「大きく構えなくて大丈夫です。まず最低限守る所から決めましょう」','「将来の自分と家族に、少し余裕を残すための話です」','「家族のために無理をするのではなく、無理なく守る形を探しましょう」','「備えは心配性のためではなく、大事な人への段取りです」','「お子さんの将来の選択肢を狭めない、という見方で考えてみませんか」','「“自分に何かあっても、家族の生活は変えない”を先に作りましょう」','「同じ年代でお子さんがいる方は、ここから整える方が多いです」','「大事な人に“迷惑をかけない段取り”と思うと、気が楽になりますよ」','「やりたいことを諦めないために、土台だけ固めておきましょう」','「今は最低限でOKです。家族が増えたら一緒に見直しましょう」'],
+    '承認・楽しさ':['「ちゃんと備えている人は、まわりから見ても格好いいんですよ」','「こういう準備ができている方って、やっぱり信頼されます」','「せっかくなら、無理なくスマートに備える形にしましょう」','「“ちゃんとしてる感”を出しながら、負担は重くしない設計にできます」','「今のうちに整えておくと、あとでかなり身軽です」','「備え方にもセンスが出ます。重すぎない形にしましょう」','「人に勧められて入るより、自分で選んだ形の方が気持ちいいですよ」','「せっかくなら、納得できて人にも話せる内容にしましょう」','「ここを押さえているだけで、だいぶ安心感のある人に見えます」','「無理なく続く形にできると、ちゃんと自分を褒められます」','「ここまで考えて備える方は、正直そう多くないですよ」','「“ちゃんとしてる人”の選び方、という形で組みましょう」','「お金のことで慌てない自分でいられると、気持ちにも余裕が出ます」','「人に聞かれた時、さらっと説明できる内容にしておきましょう」','「勧められて入るより、自分で選んだ形のほうが納得できますよね」','「盛りすぎず“必要十分でスマート”が、結局いちばん格好いいです」'],
+    '安心・安定':['「“いざ”という時、これがあるだけで安心が全然違います」','「不安をゼロにはできませんが、困る場面をかなり減らせます」','「毎月の負担を大きくせず、安心の土台だけ作っておきましょう」','「迷った時は、“何があっても困らない形”から考えるのが一番です」','「大きな保障より、まず生活が崩れない安心を優先しましょう」','「万が一の時に慌てないよう、先に置き場所を作る感覚です」','「必要以上に入る必要はありません。足りない所だけ埋めましょう」','「安心は一度整えると、普段は考えなくてよくなります」','「不安な所を一つずつ消していく形で見ていきましょう」','「“これなら大丈夫”と思えるラインを一緒に決めましょう」','「同じように迷われた方も、ここを整えて“気が楽になった”と言われます」','「入った後のフォローもあるので、“入れて終わり”にはしません」','「今日は決めなくて大丈夫です。安心できる形か、だけ確認しましょう」','「心配な場面を一つずつ、“これは大丈夫”に変えていきましょう」','「大きく構えなくて大丈夫です。崩れない土台だけ先に作りましょう」','「“もしも”の時に誰がどう困るか、そこだけ埋めれば十分です」'],
+    '損得・合理':['「数字で見ると、入らない方が“損”なんです」','「感覚ではなく、費用対効果で見ると判断しやすいです」','「同じ備えるなら、ムダが少ない組み方にしましょう」','「比較すると、ここだけは押さえた方が合理的です」','「必要な保障だけに絞れば、かなりムダは減らせます」','「払う金額より、“何に備えられるか”で見ると判断しやすいです」','「今の条件なら、優先順位はここからでいいと思います」','「高い安いより、使う可能性と困る金額で比べましょう」','「数字に直すと、入る理由と削る理由がはっきりします」','「損を避けるなら、全部ではなく急所だけ押さえるのが現実的です」','「同じ予算なら、いちばん“効く所”から埋めるのが合理的です」','「“入る理由”と“削る理由”、両方そろえてから決めましょう」','「他の方も、まずここだけ押さえて後は様子見、という形が多いです」','「もし今これを外すと、どこで困るか。そこだけ一緒に見ましょう」','「迷う時間ももったいないので、判断材料は今そろえてしまいましょう」','「“とりあえず全部”より、効率で選ぶほうが結局おトクです」'],
+    '納得・知識':['「根拠の資料をお渡しします。ご自身で納得して選んでください」','「一度持ち帰って、数字と条件を見比べてください」','「わからないまま決める必要はありません。根拠から順番に確認しましょう」','「判断材料を揃えるので、最後はご自身の納得感で選んでください」','「疑問が残る所は、今日は決めなくて大丈夫です」','「良い話に聞こえる所ほど、条件を一緒に確認しましょう」','「比較表にしておくので、あとで冷静に見直せます」','「納得できない部分があるなら、そこを先に潰しましょう」','「説明を聞いて終わりではなく、自分で判断できる状態にしましょう」','「根拠が見えれば、入る入らないも決めやすくなります」','「数字と条件を並べますので、最後はご自身の基準で選んでください」','「“なんとなく良さそう”で決めず、根拠から順に確認しましょう」','「持ち帰って比較していただいて大丈夫です。急ぎません」','「都合のいい所だけでなく、向かないケースも先にお見せします」','「ご自身で調べた内容と突き合わせて、ズレがないか確認しましょう」','「“納得できない所”が残るなら、そこを先に解消しましょう」']
+  };
+  var DETAIL={
+    '結論ストレート型':'結論・数字を真っ先に欲しがる。回りくどい説明は嫌う。要点から短く言い切る。',
+    '結論・整理型':'筋道立てて端的に。論理の整合性を重視する。資料がきれいだと信頼されやすい。',
+    '感情・安定型':'じっくり信頼を積むタイプ。急がず、安心感を与えながら進める。',
+    '感情・寄り添い型':'共感と人柄で動く。まず傾聴して“味方だ”と感じてもらってから本題へ。',
+    'ビジョン・行動型':'未来をぐいぐい描くと乗る。可能性とスピード感で押す。',
+    'ビジョン・洞察型':'静かに可能性を見極める。深い問いかけと将来像でじわっと動かす。',
+    '即断・推進型':'勢いで決める。選択肢を絞って「これ」と背中を押すと進む。',
+    '前向き熟考型':'やりたい気持ちはあるが確認したい。後押し＋安心材料をセットで。',
+    'どっしり即決型':'腹を決めたら動く。大局を見せて決断を促す。',
+    '着実・安定型':'一歩ずつ固めてから。急かさず、手順を明確に示す。',
+    '合理・即断型':'損得が見えれば速い。数字とメリットを即座に提示。',
+    '熟考・吟味型':'とことん考える。急かさず、材料と考える時間を渡す。',
+    '成長・拡大':'「もっと伸びる」に心が動く。前向きな未来像を見せる。',
+    '家族・着実':'家族と着実な安心が動機。地に足ついた“守り”を提案。',
+    '承認・華やかさ':'認められたい・目立ちたい。「さすが」「特別」が効く。',
+    '信頼・温かさ':'人の温かさ・信頼で動く。誠実さと人柄を示す。',
+    '安心・どっしり':'大きな安心が欲しい。実績・保証でどっしり安心を。',
+    '堅実・実利':'地道な実利を好む。ムダなく堅実な提案が刺さる。',
+    '損得・メリット':'はっきりした損得で動く。数字と比較でメリットを明確に。',
+    '価値・品質':'質・特別感を重視。安さより「良いもの」を訴える。',
+    '自由・知的':'自由と知的好奇心。大きな視点と納得感で動かす。',
+    '納得・情報':'自分で調べて納得したい。根拠とデータを渡し選ばせる。',
+    '超オープン':'かなり距離が近い。フランクに踏み込んでOK。',
+    'オープン':'距離は近め。早めに本題に入って大丈夫。',
+    '中間':'最初は様子見。反応を見ながら徐々に距離を詰める。',
+    '警戒':'警戒が強め。まず聞き役、売り込まない姿勢を先に見せる。',
+    '強い警戒':'かなり警戒が強い。とことん聞き役、信頼ができるまで提案しない。'
+  };
+
+  function jdn(y,m,d){var a=Math.floor((14-m)/12);var yy=y+4800-a;var mm=m+12*a-3;return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;}
+  function profile(y,m,d){
+    var idx=((jdn(y,m,d)+49)%60+60)%60;
+    var stem=idx%10, br=idx%12;
+    var f=axes4(stem,br);
+    function pick(map,key,shift){var arr=map[key];return arr[(idx+shift)%arr.length];}
+    return {kanshi:STEMS[stem]+BR[br],yin:(stem%2===0)?'陽':'陰',gogyou:GOGYOU[Math.floor(stem/2)],
+      talk:f.talk,ketsu:f.ketsu,button:f.button,maai:f.maai,
+      talkBase:f.talkBase,ketsuBase:f.ketsuBase,buttonBase:f.buttonBase,maaiBase:f.maaiBase,
+      tsukami:pick(TSU_T,f.talkBase,br)+'　＋　'+pick(TSU_M,f.maaiBase,stem),
+      ng:pick(NG_T,f.talkBase,stem)+'　／　'+pick(NG_K,f.ketsuBase,br),
+      kill:pick(KILL,f.buttonBase,stem+br)};
+  }
+  function sunlong(y,m,d){var n=jdn(y,m,d)-2451545.0;var L=(280.460+0.9856474*n)%360;var g=((357.528+0.9856003*n)%360)*Math.PI/180;return (((L+1.915*Math.sin(g)+0.020*Math.sin(2*g))%360)+360)%360;}
+  function monthPillar(y,m,d){var lam=sunlong(y,m,d);var sec=Math.floor((((lam-315)%360)+360)%360/30);var sy;if(m>=3)sy=y;else if(m===2)sy=(sec===0)?y:y-1;else sy=y-1;var ystem=((((sy-4)%60)+60)%60)%10;var base=((ystem%5)*2+2)%10;return{stem:(base+sec)%10,br:(2+sec)%12};}
+  function axes4(stem,br){var gog=Math.floor(stem/2),yang=(stem%2===0),grp=GROUP[br];var sc=(yang?1:-1)+[1,1,0,-1,-1][gog]+({'生':1,'正':0,'墓':-1})[grp];var wg=gog<2?'a':(gog===2?'b':'c');return{talk:TALK6[grp+(br%2)],talkBase:TALK[grp],ketsu:KET6[(stem%2)+wg],ketsuBase:yang?'即断・攻め型':'慎重・熟考型',button:BTN10[stem],buttonBase:BUTTON[gog],maai:(sc>=2?'超オープン':(sc===1?'オープン':(sc===0?'中間':(sc===-1?'警戒':'強い警戒')))),maaiBase:(sc>=1?'オープン型':(sc<=-1?'警戒型':'中間型'))};}
+  function deepChara(a){return {'結論ベース':'テキパキ結論重視','感情ベース':'人柄・共感で動く','ビジョンベース':'未来や面白さに反応'}[a.talkBase]+'／'+{'オープン型':'距離が近い','中間型':'最初は様子見','警戒型':'警戒強め・慎重'}[a.maaiBase];}
+  function deepDetail(a){var t={'結論ベース':'結論・数字から入ると伝わる','感情ベース':'共感と人柄で心が動く','ビジョンベース':'未来像や可能性にワクワクする'}[a.talkBase];var m={'オープン型':'距離が近く踏み込んでOK','中間型':'様子を見ながら距離を詰める','警戒型':'警戒が強いのでまず聞き役'}[a.maaiBase];var b={'損得・合理':'損得と数字','安心・安定':'安心と実績','承認・楽しさ':'承認と特別感','納得・知識':'根拠と納得','成長・家族':'将来と家族'}[a.buttonBase];var fast=(a.ketsuBase==='即断・攻め型');var ng=(a.maaiBase==='警戒型')?'いきなりの売り込み・急かし':(a.talkBase==='結論ベース'?'長い世間話・回りくどさ':'事務的で冷たい対応');return '<b>特徴</b>：'+t+'。'+m+'。<br><b>刺さる一手</b>：「'+b+'」を'+(fast?'テンポよく':'急かさず')+'示す。<br><b>避ける</b>：'+ng+'。';}
+  function deepRead(){
+    var y=+document.getElementById('yy').value,m=+document.getElementById('mm').value,d=+document.getElementById('dd').value;if(!y||!m||!d)return '';
+    var di=(((jdn(y,m,d)+49)%60)+60)%60,dStem=di%10,dBr=di%12;
+    var mp=monthPillar(y,m,d),mStem=mp.stem,mBr=mp.br;
+    var dA=axes4(dStem,dBr),mA=axes4(mStem,mBr);
+    var dK=STEMS[dStem]+BR[dBr],mK=STEMS[mStem]+BR[mBr];
+    var gap=(dA.talkBase!==mA.talkBase)||(dA.maaiBase!==mA.maaiBase);
+    var openMap={'結論ベース':'結論ベースでテンポよく要点から','感情ベース':'まず傾聴・雑談で警戒を解く','ビジョンベース':'将来像や面白さの話から'};
+    var s1=(mA.maaiBase==='警戒型'?'売り込まず、':'')+openMap[mA.talkBase];
+    var s2={'結論ベース':'結論を軸に','感情ベース':'感情に寄せて','ビジョンベース':'将来像を描いて'}[dA.talkBase]+'、“'+dA.button+'”を刺す';
+    var s3=(dA.ketsuBase==='即断・攻め型')?'迷わせず背中を押す':'急がない・持ち帰り歓迎';
+    var box=gap?'<div class="deep-gap"><div class="deep-gap-l">⚠ ギャップ注意</div><div class="deep-gap-x">第一印象（社会の顔）と本音がズレるタイプ。序盤の感触のまま詰めると引かれやすい。</div></div>':'<div class="deep-match">社会の顔と本音が一致＝ブレない読みやすいお客さま。一本で攻めてOK。</div>';
+    return '<div class="deep"><div class="deep-h">深い読み<span class="deep-pro">Pro</span></div>'
+      +'<div class="layer" data-ld="1"><div class="layer-t"><span class="dot blue"></span>① 社会的な顔（序盤）<span class="layer-k">月柱 '+mK+'　詳しく›</span></div><div class="layer-a">'+mA.talk+'／'+mA.maai+'</div><div class="layer-c">'+deepChara(mA)+'</div><div class="layer-detail" hidden>'+deepDetail(mA)+'</div></div>'
+      +'<div class="layer" data-ld="1"><div class="layer-t"><span class="dot gold"></span>② 本音（打ち解け後）<span class="layer-k">日柱 '+dK+'　詳しく›</span></div><div class="layer-a">'+dA.talk+'／'+dA.maai+'</div><div class="layer-c">'+deepChara(dA)+'</div><div class="layer-detail" hidden>'+deepDetail(dA)+'</div></div>'
+      +box
+      +'<div class="strat"><div class="strat-r"><span class="strat-l blue">序盤</span>'+s1+'</div><div class="strat-r"><span class="strat-l gold">打ち解け後</span>'+s2+'</div><div class="strat-r"><span class="strat-l dark">クロージング</span>'+s3+'</div></div></div>';
+  }
+  function fmt(v){return String(v).replace(/・/g,'・<wbr>');}
+  function cell(l,disp,key){return '<div class="cell" data-v="'+key+'" data-l="'+l+'"><div><div class="l">'+l+' <span class="more">詳しく</span></div><div class="v">'+fmt(disp)+'</div></div></div>';}
+  function blk(c,l,x){return '<div class="blk '+c+'"><div><div class="l">'+l+'</div><div class="x">'+x+'</div></div></div>';}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+  function dateLabel(){return document.getElementById('yy').value+'年'+document.getElementById('mm').value+'月'+document.getElementById('dd').value+'日';}
+  function readJson(key){try{return JSON.parse(localStorage.getItem(key)||'[]');}catch(e){return [];}}
+  function writeJson(key,data){localStorage.setItem(key,JSON.stringify(data));}
+  function readCustomers(){return readJson(CUSTOMERS_KEY);}
+  function writeCustomers(data){writeJson(CUSTOMERS_KEY,data);}
+  function readHistory(){return readJson(HISTORY_KEY);}
+  function writeHistory(data){writeJson(HISTORY_KEY,data);}
+  var APPTS_KEY='eii_appts_v1';
+  function readAppts(){return readJson(APPTS_KEY);}
+  function writeAppts(data){writeJson(APPTS_KEY,data);}
+  function parseBirth(s){var m=String(s).match(/(\d+)\D+(\d+)\D+(\d+)/);return m?{y:+m[1],mo:+m[2],d:+m[3]}:null;}
+  function apptRead(birth){var b=parseBirth(birth);if(!b)return null;var di=(((jdn(b.y,b.mo,b.d)+49)%60)+60)%60;var dA=axes4(di%10,di%12);var mp=monthPillar(b.y,b.mo,b.d);var mA=axes4(mp.stem,mp.br);return{day:dA,month:mA,gap:(dA.talkBase!==mA.talkBase)||(dA.maaiBase!==mA.maaiBase)};}
+  function optRange(from,to){var s='';for(var i=from;i<=to;i++){s+='<option value="'+i+'">'+i+'</option>';}return s;}
+  function addAppt(cid){var y=document.getElementById('apptYY'),m=document.getElementById('apptMM'),d=document.getElementById('apptDD');if(!y||!m||!d||!y.value||!m.value||!d.value){toast('日付を選んでください');return;}var dt=y.value+'-'+String(m.value).padStart(2,'0')+'-'+String(d.value).padStart(2,'0');var a=readAppts();a.push({id:uid(),customerId:cid,dt:dt,createdAt:Date.now()});writeAppts(a);toast('アポを登録しました');renderAppts();}
+  function deleteAppt(aid){var ar=readAppts().filter(function(x){return x.id!==aid;});writeAppts(ar);toast('アポを削除しました');renderAppts();}
+  function logSearch(){var p=currentProfile;if(!p)return;var nm=(document.getElementById('nickname')&&document.getElementById('nickname').value)||'';var h=readHistory();h.unshift({id:uid(),createdAt:Date.now(),type:'検索',nickname:nm,birth:dateLabel(),profile:p,extra:currentExtra});writeHistory(h.slice(0,100));}
+  function saveFromHistory(hid){var h=readHistory().filter(function(x){return x.id===hid;})[0];if(!h)return;if(!isPro()&&readCustomers().length>=5){toast('Freeは保存5件まで。Proで無制限に。');return;}var now=Date.now(),cs=readCustomers();cs.unshift({id:uid(),createdAt:now,updatedAt:now,nickname:h.nickname||'名前未設定',birth:h.birth,profile:h.profile,extra:h.extra||{sex:'',blood:''},memo:'',notes:[]});writeCustomers(cs.slice(0,100));toast('お客様一覧に保存しました');}
+  function saveReview(id){var note=(document.getElementById('rvNote')&&document.getElementById('rvNote').value||'').trim();if(!note){toast('内容を入力してください');return;}var customers=readCustomers();customers=customers.map(function(c){if(c.id!==id)return c;var rv=(c.reviews||[]).concat([{at:Date.now(),note:note,type:tShort(c.profile)}]);return Object.assign({},c,{reviews:rv,updatedAt:Date.now()});});writeCustomers(customers);toast('保存しました');renderCustomerDetail(id);}
+  function sendFeedback(){var el=document.getElementById('fbText');var t=(el&&el.value||'').trim();if(!t){toast('内容を入力してください');return;}try{var fb=JSON.parse(localStorage.getItem('eii_feedback')||'[]');fb.push({at:Date.now(),text:t});localStorage.setItem('eii_feedback',JSON.stringify(fb));}catch(e){}if(el)el.value='';toast('ありがとうございます！');location.href='mailto:vigo.4274g@gmail.com?subject='+encodeURIComponent('ITTE ご意見・ご要望')+'&body='+encodeURIComponent(t);}
+  function renderAppts(){
+    var appts=readAppts(),customers=readCustomers(),cmap={};
+    customers.forEach(function(c){cmap[c.id]=c;});
+    appts=appts.filter(function(a){return cmap[a.customerId];}).sort(function(a,b){return String(a.dt).localeCompare(String(b.dt));});
+    document.querySelector('.in').style.display='none';setActive('appts');currentView='appts';
+    if(!isPro()){document.getElementById('out').innerHTML=lockView('アポ管理','カレンダーに各お客様の読みを埋め込んで、商談前にサッと開けます。');return;}
+    var body;
+    if(!appts.length){body='<div class="view-card empty">まだアポはありません。<br>「お客様一覧」からお客様を開いて登録できます。</div>';}
+    else{body='<div class="list">'+appts.map(function(a){
+      var c=cmap[a.customerId],r=apptRead(c.birth),dt=String(a.dt).replace('T',' ');
+      var chips=r?('<span class="apx">'+esc(r.day.talk)+'</span><span class="apx">'+esc(r.day.maai)+'</span>'+(r.gap?'<span class="apx warn">⚠ ギャップ注意</span>':'')):'';
+      return '<div class="item appt-item" data-id="'+esc(c.id)+'"><div class="top"><span>'+esc(dt)+'</span><span>'+esc(c.birth)+'</span></div><div class="main">'+esc(c.nickname||'名前未設定')+'</div><div class="apchips">'+chips+'</div><button class="appt-del" type="button" data-action="delete-appt" data-appt="'+esc(a.id)+'">削除</button></div>';
+    }).join('')+'</div>';}
+    document.getElementById('out').innerHTML='<div class="view"><div class="view-card"><h2>アポ・予定</h2><p>商談前に開けば、お客さまの読みがすぐ分かります。タップで詳細へ。</p></div>'+body+'</div>';
+  }
+  function migrateOld(){
+    if(localStorage.getItem(CUSTOMERS_KEY))return;
+    var old=readJson(OLD_STORE_KEY);
+    if(!old.length)return;
+    var customers=old.map(function(c){return {id:uid(),createdAt:c.createdAt||Date.now(),updatedAt:c.createdAt||Date.now(),nickname:c.nickname||'名前未設定',birth:c.birth,profile:c.profile,memo:c.memo||'',notes:c.memo?[{at:c.createdAt||Date.now(),text:c.memo}]:[]};});
+    writeCustomers(customers);writeHistory(customers.map(function(c){return {id:uid(),customerId:c.id,createdAt:c.createdAt,type:'保存',nickname:c.nickname,birth:c.birth,profile:c.profile,memo:c.memo};}));
+  }
+  function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(function(){t.classList.remove('show');},1800);}
+  function setActive(view){Array.prototype.forEach.call(document.querySelectorAll('footer span'),function(x){x.classList.toggle('active',x.getAttribute('data-view')===view);});}
+  function isPro(){return (localStorage.getItem('eii_plan')||'Free')==='Pro' || trialActive();}
+  function lockBlock(title,desc){return '<div class="view-card lockcard"><div class="lh"><span>🔒</span><b>'+title+'</b><span class="pill">Pro</span></div><p>'+desc+'</p><button class="act gopro" type="button" data-action="go-pro">Proで解放する</button></div>';}
+  function lockView(title,desc){return '<div class="view">'+lockBlock(title,desc)+'</div>';}
+  function tShort(p){var t=(p.talkBase||'').replace('ベース','');var k=((p.ketsuBase||'').indexOf('即断')>=0)?'即断':'慎重';var b=(p.buttonBase||'').split('・')[0];return t+' × '+k+' × '+b;}
+  function readWins(){try{return JSON.parse(localStorage.getItem('eii_wins')||'[]');}catch(e){return [];}}
+  function writeWins(a){localStorage.setItem('eii_wins',JSON.stringify(a));}
+  function markWin(res){var p=currentProfile;if(!p)return;var w=readWins();w.unshift({at:Date.now(),res:res,kanshi:p.kanshi,talk:p.talk,button:p.button,kill:p.kill,nick:(document.getElementById('nickname')&&document.getElementById('nickname').value)||''});writeWins(w.slice(0,300));toast(res==='効いた'?'“勝ちパターン”に記録しました':'記録しました。次に活かそう');var n=document.getElementById('winYes');if(n)n.textContent=readWins().filter(function(x){return x.res==='効いた';}).length;}
+  function winLoop(){var yes=readWins().filter(function(w){return w.res==='効いた';}).length;return '<div class="win"><div class="win-q">この入り方、効いた？</div><div class="win-b"><button class="wbtn yes" type="button" data-action="win-yes">効いた</button><button class="wbtn no" type="button" data-action="win-no">イマイチ</button></div><div class="win-n">あなたの“勝ちパターン”に記録 ・ これまで効いた <b id="winYes">'+yes+'</b>件</div></div>';}
+  function render(p){
+    currentProfile=p;currentView='home';
+    document.querySelector('.in').style.display='none';
+    setActive('home');
+    document.getElementById('out').innerHTML=
+      '<div class="rebar"><button class="redo" type="button" data-action="show-input">＋ 別の生年月日で診断</button></div>'+
+      ((currentExtra&&(currentExtra.sex||currentExtra.blood))?'<div class="exmeta">'+(currentExtra.sex?'<span>'+esc(currentExtra.sex)+'</span>':'')+(currentExtra.blood?'<span>'+esc(currentExtra.blood)+'型</span>':'')+'</div>':'')+
+      ((currentExtra&&currentExtra.blood&&BLOOD_TALK[currentExtra.blood])?'<div class="bloodtalk"><b>血液型あるある（会話ネタ）</b>'+esc(BLOOD_TALK[currentExtra.blood])+'</div>':'')+
+      '<div class="toprow"><button class="tchip" type="button" data-action="toggle-axes"><span class="tchip-l">タイプ</span><span class="tchip-s">'+tShort(p)+'</span><span class="tchip-c" id="axChev">▾</span></button><button class="tchip" type="button" data-action="toggle-deep"><span class="tchip-l">深い読み<span class="pro-mini">Pro</span></span><span class="tchip-s">'+(isPro()?'社会の顔×本音':'タップで見る')+'</span><span class="tchip-c" id="dpChev">▾</span></button></div>'+
+      '<div class="grid" id="axisGrid" style="display:none">'+cell('話し方',p.talk,p.talk)+cell('決断テンポ',p.ketsu,p.ketsu)+cell('意思決定',p.button,p.button)+cell('距離感',p.maai,p.maai)+'<div class="kanshi-mini">日柱 '+p.kanshi+' ・ '+p.yin+'・'+p.gogyou+'</div></div>'+
+      '<div class="detail" id="detail"></div>'+
+      '<div id="deepWrap" style="display:none">'+(isPro()?deepRead():lockBlock('深い読み（社会の顔×本音）','月柱×日柱の二層で、序盤の入り方→本音の刺し方→ギャップ戦略まで出ます。'))+'</div>'+
+      '<div class="hero"><div class="hero-l">そのまま言える ・ 最初のひと言</div><div class="hero-x">'+p.tsukami+'</div></div>'+
+      blk('b2','地雷（やってはいけない）',p.ng)+blk('b3','刺さる一言',p.kill)+
+      '<div class="actions"><button class="act primary" type="button" data-action="open-memo">商談メモを開く</button><button class="act secondary" type="button" data-action="save-card">この内容を保存</button></div>'+(currentMemo?'<div class="memo-box"><div class="memo-h">商談メモ</div><div class="memo-x">'+esc(currentMemo)+'</div></div>':'');
+  }
+  function renderCustomers(){
+    var cards=readCustomers();
+    document.querySelector('.in').style.display='none';setActive('customers');currentView='customers';
+    document.getElementById('out').innerHTML='<div class="view"><div class="view-card"><div class="view-head"><h2>お客様一覧</h2><button class="mini danger" type="button" data-action="toggle-delete">'+(deleteMode?'選択を削除':'削除')+'</button></div><p>'+(deleteMode?'削除したいお客様にチェックを入れて、もう一度「選択を削除」を押してください。':'お客様をタッチすると詳細と追加メモを開けます。')+'</p></div>'+listHtml(cards,'customers')+'</div>';
+  }
+  function renderHistory(){
+    var cards=readHistory().slice().sort(function(a,b){return b.createdAt-a.createdAt;});
+    document.querySelector('.in').style.display='none';setActive('history');currentView='history';
+    document.getElementById('out').innerHTML='<div class="view"><div class="view-card"><div class="view-head"><h2>検索履歴</h2><button class="mini danger" type="button" data-action="clear-history">一括削除</button></div><p>診断した生年月日の履歴です。「お客様一覧に保存」で登録できます。</p></div>'+listHtml(cards,'history')+'</div>';
+  }
+  function coachReply(chip,p){
+    var bb=p.buttonBase,mb=p.maaiBase,kb=p.ketsuBase,tb=p.talkBase;
+    if(chip==='切り出し方'){
+      var open={'結論ベース':'結論から手短に切り出すのが◎','感情ベース':'まず雑談と傾聴で“味方だ”と感じてもらってから','ビジョンベース':'「将来こうなれたら」の話から入ると乗ります'}[tb];
+      var note=(mb==='警戒型')?'。警戒型なので「無理にお勧めしません」を先に置くと空気が緩みます':(mb==='オープン型'?'。距離が近いので早めに本題でOK':'。最初は様子を見ながら少しずつ');
+      return open+note+'。';
+    }
+    if(chip==='値段で渋ってる'){
+      return {'損得・合理':'損得で動く方。「今の負担」より「入らない時に困る金額」を数字で並べると刺さります。','安心・安定':'安心重視の方。値段でなく「これが無い時の不安」に焦点を。月額は“安心の保険料”と言い換えを。','承認・楽しさ':'見栄えも大事な方。「ちゃんと備えている人ほど格好いい」と前向きに持っていく。','納得・知識':'納得型。比較表と根拠を渡して「ご自身で判断を」。押さないのが正解。','成長・家族':'家族思いの方。「ご家族のための“もしも”」に絞ると、価格が気になりにくくなります。'}[bb];
+    }
+    if(chip==='何を提案する'){
+      return {'損得・合理':'コスパ重視＝掛け捨て中心でムダなく。「これが一番効率的」と比較で。','安心・安定':'守り重視＝医療・就業不能・終身など「もしもの土台」から。','承認・楽しさ':'特別感＝手厚いワンランク上のプランを「あなたなら」と。','納得・知識':'自分で選びたい方＝選択肢を複数、根拠つきで提示。','成長・家族':'家族＝収入保障・学資など「家族を守る」設計を中心に。'}[bb];
+    }
+    if(chip==='反論された'){
+      if(mb==='警戒型'||kb==='慎重・熟考型')return '押し返さないのが鉄則。「おっしゃる通りです」と一度受けて、不安の中身を一つだけ聞き出す。';
+      if(mb==='オープン型'||kb==='即断・攻め型')return 'その場で具体例＋数字で切り返してOK。テンポを落とさず前へ。';
+      return 'まず反論の理由を確認。納得できる材料を一つ渡してから次へ。';
+    }
+    if(chip==='クロージング'){
+      return (kb==='即断・攻め型')?'迷わせず「ここまで進めましょう」と背中を押す。選択肢は絞って。':'急がない。「持ち帰ってOK」と言いつつ、次に会う日程だけ先に決める。';
+    }
+    return 'このお客さんのタイプに合わせてお答えします。';
+  }
+  function renderAI(){
+    document.querySelector('.in').style.display='none';setActive('ai');currentView='ai';
+    if(!isPro()){document.getElementById('out').innerHTML=lockView('AI商談サポート','このお客様専用に、切り出し方・反論・クロージングをAIがその場で助言します。');return;}
+    var p=currentProfile,out=document.getElementById('out');
+    if(!p){out.innerHTML='<div class="view"><div class="view-card empty">まず「ホーム」で生年月日を診断してください。<br>そのお客さん専用に、AIが相談に乗ります。</div></div>';return;}
+    if(!aiMessages.length)aiMessages=[{role:'ai',text:esc(p.talk)+'のお客さんですね。下のボタンか、知りたいことを聞いてください。'}];
+    var chips=['切り出し方','値段で渋ってる','何を提案する','反論された','クロージング'];
+    var nm=(document.getElementById('nickname')&&document.getElementById('nickname').value)||'このお客さま';
+    var html='<div class="view ai-view"><div class="ai-head"><div class="ai-title">AI商談コーチ</div><div class="ai-ctx">'+esc(nm)+'｜'+esc(p.talk)+'／'+esc(p.maai)+'</div></div>';
+    html+='<div class="ai-chips">'+chips.map(function(c){return '<button class="ai-chip" type="button" data-chip="'+esc(c)+'">'+esc(c)+'</button>';}).join('')+'</div>';
+    html+='<div class="ai-msgs">'+aiMessages.map(function(m){return '<div class="ai-bub '+m.role+'">'+m.text+'</div>';}).join('')+'</div>';
+    html+='<div class="ai-input"><input type="text" id="aiInput" placeholder="自由に質問（本番でAIが回答）"><button class="ai-send" type="button" data-action="ai-send">送信</button></div></div>';
+    out.innerHTML=html;
+  }
+  function renderSettings(){
+    var count=readCustomers().length;var plan=localStorage.getItem('eii_plan')||'Free';if(plan==='Pro'&&!localStorage.getItem('eii_pro_since'))localStorage.setItem('eii_pro_since',String(Date.now()));
+    document.querySelector('.in').style.display='none';setActive('settings');currentView='settings';
+    var planInner=plan==='Pro'?'<p>今のプラン：<b>Pro（有効）</b></p>'+(nextRenewalDate()?'<p class="hint" style="margin:4px 0 0">次回更新日：<b style="color:#14161a">'+fmtRenewal(nextRenewalDate())+'</b>（目安）</p>':'')+'<p class="hint">深い読み（二層）・アポ管理・無制限保存・AI商談サポートが使えます。</p><button class="mini" type="button" data-action="cancel-sub">解約する</button>':'<p>今のプラン：<b>Free</b>'+(trialActive()?' ・ <b style="color:#0f6e56">🎁 無料体験 あと'+trialLeft()+'日</b>（全機能オープン）':' ・ <b style="color:#a8473f">無料体験は終了</b>')+'</p>'+(STRIPE_PAY_URL?'<a class="act primary" href="'+STRIPE_PAY_URL+'" style="display:flex;align-items:center;justify-content:center;text-decoration:none;margin:12px 0 8px">¥980/月で解錠する</a>':'')+'<p class="hint">Proで「深い読み（二層）・アポ管理・無制限保存・AI商談サポート」が使えます。お支払い後、自動でProが使えるようになります。</p>';
+    var fbInner='<p style="font-size:12px;color:#6b7280;margin:0 0 6px">使ってみて気づいたこと・欲しい機能など。改善の参考にします。</p><textarea id="fbText" placeholder="例：◯◯が分かりにくい／△△が欲しい"></textarea><button class="act primary" type="button" data-action="send-feedback">送信</button>';
+    var kiyakuInner='<p style="font-size:12px;color:#6b7280;margin:0 0 8px">ご購入の前にご確認ください。</p><a href="tokushoho.html" style="display:block;padding:9px 0;color:#0f6e56;border-bottom:1px solid #eef3f1;text-decoration:none">特定商取引法に基づく表記 ›</a><a href="privacy.html" style="display:block;padding:9px 0;color:#0f6e56;border-bottom:1px solid #eef3f1;text-decoration:none">プライバシーポリシー ›</a><a href="refund.html" style="display:block;padding:9px 0;color:#0f6e56;text-decoration:none">解約・返金ポリシー ›</a>';
+    var acc=function(title,id,inner){return '<div class="view-card"><button class="fold-h" type="button" data-action="fold" data-fold="'+id+'">'+title+'<span class="fc">▾</span></button><div id="'+id+'" style="display:none;margin-top:12px">'+inner+'</div></div>';};
+    document.getElementById('out').innerHTML='<div class="view"><div class="view-card"><h2>設定</h2><p class="hint" style="margin:4px 0 0">保存件数：'+count+'件</p></div>'+acc('プラン変更','setPlan',planInner)+acc('規約・ポリシー','setKiyaku',kiyakuInner)+acc('ご意見・ご要望','setFb',fbInner)+'</div>';
+    refreshPlanButtons();
+  }
+  function listHtml(cards,mode){
+    if(!cards.length)return '<div class="view-card empty">まだ保存された内容はありません。</div>';
+    return '<div class="list">'+cards.map(function(c){
+      var d=new Date(c.createdAt),time=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+      var cls='item'+(deleteMode&&mode==='customers'?' checkable':'')+(selectedIds.indexOf(c.id)>-1?' selected':'');
+      var name=c.nickname||'名前未設定', label=mode==='history'?(c.type||'保存'):'詳細を見る';
+      return '<div class="'+cls+'" data-id="'+esc(c.id)+'"><div class="top"><span>'+esc(c.birth)+'</span><span>'+esc(label)+'・'+time+'</span></div><div class="main">'+esc(name)+'　'+esc(c.profile.kanshi)+'　'+esc(c.profile.talk)+'</div><div class="sub">'+esc(c.profile.kill)+'</div>'+(c.memo?'<div class="sub">メモ：'+esc(c.memo)+'</div>':'')+(mode==='history'?'<button class="hist-save" type="button" data-action="save-from-history" data-id="'+esc(c.id)+'">お客様一覧に保存</button>':'')+'</div>';
+    }).join('')+'</div>';
+  }
+  function saveCurrent(){
+    if(!currentProfile)run();
+    if(!isPro()&&readCustomers().length>=5){toast('Freeは保存5件まで。Proで無制限に。');return;}
+    var now=Date.now(),nickname=(document.getElementById('nickname').value||'名前未設定').trim()||'名前未設定';
+    var customers=readCustomers(),customer={id:uid(),createdAt:now,updatedAt:now,nickname:nickname,birth:dateLabel(),profile:currentProfile,extra:currentExtra,memo:currentMemo,notes:currentMemo?[{at:now,text:currentMemo}]:[]};
+    customers.unshift(customer);writeCustomers(customers.slice(0,100));
+    toast('保存しました');
+  }
+  function renderCustomerDetail(id){
+    var customers=readCustomers(),c=customers.filter(function(x){return x.id===id;})[0];if(!c){renderCustomers();return;}
+    document.querySelector('.in').style.display='none';setActive('customers');currentView='customer-detail';
+    var notes=(c.notes||[]).slice().reverse().map(function(n){var d=new Date(n.at);return '<div class="note">'+esc(d.getMonth()+1)+'/'+esc(d.getDate())+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+'　'+esc(n.text)+'</div>';}).join('');
+    var cp=c.profile;
+    var rvLog=(c.reviews||[]).slice().reverse().map(function(r){var d=new Date(r.at);return '<div class="rv-item"><div class="rv-note">'+esc(r.note||'')+'</div><span class="rv-date">'+esc((d.getMonth()+1)+'/'+d.getDate())+'</span></div>';}).join('');rvLog=rvLog?'<div class="rv-log">'+rvLog+'</div>':'';
+    document.getElementById('out').innerHTML='<div class="view"><div class="view-card detail-card"><div class="view-head"><h2>'+esc(c.nickname||'名前未設定')+'</h2><button class="mini" type="button" data-action="back-customers">戻る</button></div><p class="cust-meta">'+esc(c.birth)+(c.extra&&(c.extra.sex||c.extra.blood)?' ・ '+esc([c.extra.sex,c.extra.blood?c.extra.blood+'型':''].filter(function(x){return x;}).join('・')):'')+' ・ タイプ：'+esc(tShort(cp))+'</p><div class="actions"><button class="act aigo" type="button" data-action="consult-customer" data-id="'+esc(c.id)+'">このお客様でAI相談</button></div></div><div class="view-card"><button class="fold-h" type="button" data-action="fold" data-fold="infoFold">情報（読み）<span class="fc">▾</span></button><div id="infoFold" style="display:none;margin-top:10px"><div class="grid">'+cell('話し方',cp.talk,cp.talk)+cell('決断テンポ',cp.ketsu,cp.ketsu)+cell('意思決定',cp.button,cp.button)+cell('距離感',cp.maai,cp.maai)+'</div><div class="detail" id="detail"></div>'+blk('b1','最初のつかみ',cp.tsukami||'')+blk('b2','地雷（やってはいけない）',cp.ng||'')+blk('b3','刺さる一言',cp.kill||'')+'</div></div><div class="view-card"><button class="fold-h" type="button" data-action="fold" data-fold="memoFold">追加メモ<span class="fc">▾</span></button><div id="memoFold" style="display:none;margin-top:10px"><textarea id="detailMemo" placeholder="追加メモを入力">'+esc(c.memo||'')+'</textarea><div class="actions"><button class="act primary" type="button" data-action="update-customer" data-id="'+esc(c.id)+'">保存して更新</button></div></div></div><div class="view-card"><button class="fold-h" type="button" data-action="fold" data-fold="apptFold">アポを登録<span class="fc">▾</span></button><div id="apptFold" style="display:none;margin-top:10px"><div class="appt-ymd"><select id="apptYY">'+optRange(2026,2030)+'</select>年<select id="apptMM">'+optRange(1,12)+'</select>月<select id="apptDD">'+optRange(1,31)+'</select>日</div><button class="act primary" type="button" data-action="add-appt" data-id="'+esc(c.id)+'">この日でアポ登録</button></div></div><div class="view-card"><button class="fold-h" type="button" data-action="fold" data-fold="reviewFold">商談ふりかえり<span class="fc">▾</span></button><div id="reviewFold" style="display:none;margin-top:10px"><p class="rv-q">この商談の気づき・次回の一手</p><textarea id="rvNote" placeholder="例：損失の具体化が刺さった。次回は事例から入る。"></textarea><div class="actions"><button class="act primary" type="button" data-action="save-review" data-id="'+esc(c.id)+'">保存</button></div>'+rvLog+'</div></div><div class="view-card"><h2>メモ履歴</h2><div class="note-list">'+(notes||'<div class="empty">まだメモはありません。</div>')+'</div></div></div>';
+  }
+  function updateCustomer(id){
+    var text=(document.getElementById('detailMemo')&&document.getElementById('detailMemo').value||'').trim();
+    var customers=readCustomers(),now=Date.now(),updated=null;
+    customers=customers.map(function(c){if(c.id!==id)return c;var notes=c.notes||[];if(text&&text!==c.memo)notes=notes.concat([{at:now,text:text}]);updated=Object.assign({},c,{memo:text,notes:notes,updatedAt:now});return updated;});
+    writeCustomers(customers);
+    toast('更新しました');renderCustomerDetail(id);
+  }
+  function consultCustomer(id){var c=readCustomers().filter(function(x){return x.id===id;})[0];if(!c){renderCustomers();return;}currentProfile=c.profile;currentMemo=c.memo||'';aiMessages=[];var nk=document.getElementById('nickname');if(nk)nk.value=c.nickname||'';showView('ai');}
+  function openMemo(){document.getElementById('memoText').value=currentMemo;document.getElementById('memoModal').classList.add('show');document.getElementById('memoModal').setAttribute('aria-hidden','false');}
+  function closeMemo(){document.getElementById('memoModal').classList.remove('show');document.getElementById('memoModal').setAttribute('aria-hidden','true');}
+  function openModal(id){document.getElementById(id).classList.add('show');document.getElementById(id).setAttribute('aria-hidden','false');}
+  function closeModal(id){document.getElementById(id).classList.remove('show');document.getElementById(id).setAttribute('aria-hidden','true');}
+  function refreshPlanButtons(){var plan=localStorage.getItem('eii_plan')||'Free';Array.prototype.forEach.call(document.querySelectorAll('[data-plan]'),function(b){b.classList.toggle('active',b.getAttribute('data-plan')===plan);});}
+  function setPlan(plan){localStorage.setItem('eii_plan',plan);toast(plan+'プランに変更しました');if(currentView==='settings'){renderSettings();}else{refreshPlanButtons();}}
+  function hashCode(s){var h=0;s=String(s||'');for(var i=0;i<s.length;i++){h=((h<<5)-h+s.charCodeAt(i))|0;}return h;}
+  var PRO_CODES=[2028140699,1173809210];
+  var STRIPE_PAY_URL='demo-pay.html';
+  var STRIPE_PORTAL_URL='demo-pay.html';
+  function checkUrlUnlock(){try{var m=location.search.match(/[?&]unlock=([^&?]+)/);if(m){var code=decodeURIComponent(m[1]).trim().toUpperCase();if(PRO_CODES.indexOf(hashCode(code))>-1){localStorage.setItem('eii_plan','Pro');if(!localStorage.getItem('eii_pro_since'))localStorage.setItem('eii_pro_since',String(Date.now()));history.replaceState(null,'',location.pathname);showUpgradeSuccess();}}}catch(e){}}
+  function showUpgradeSuccess(){try{var inEl=document.querySelector('.in');if(inEl)inEl.style.display='none';}catch(e){}try{setActive('home');}catch(e){}currentView='home';document.getElementById('out').innerHTML='<div class="view"><div class="view-card" style="text-align:center;border:1.5px solid #0f6e56;background:#f0f9f6;padding:26px 16px"><div style="font-size:46px;line-height:1">🎉</div><h2 style="color:#0f6e56;margin:10px 0 6px">ご登録ありがとうございます！</h2><p style="margin:0 0 2px"><b>Proプランが有効になりました。</b></p>'+(nextRenewalDate()?'<p class="hint" style="margin:6px 0 0">次回更新日：<b style="color:#0f6e56">'+fmtRenewal(nextRenewalDate())+'</b>（目安）</p>':'')+'<p class="hint" style="margin:6px 0 0">深い読み（二層）・アポ管理・無制限保存・AI商談サポートが使えます。</p><button class="act primary" type="button" data-action="go-settings" style="margin-top:16px">プランを確認する</button></div></div>';}
+  function menuInfo(kind){
+    var msg={plan:'プラン変更画面は次の実装で料金表と切替導線を作れます。',terms:'利用規約は正式文面を入れる枠を用意済みです。',privacy:'プライバシーポリシーは保存データの扱いと削除方法を明記すると良さそうです。',help:'ヘルプには診断、保存、詳細メモ、削除の手順を入れると迷いにくいです。'}[kind];
+    toast(msg);
+  }
+  function toggleDelete(){
+    if(!deleteMode){deleteMode=true;selectedIds=[];renderCustomers();return;}
+    if(!selectedIds.length){deleteMode=false;renderCustomers();toast('削除をキャンセルしました');return;}
+    var left=readCustomers().filter(function(c){return selectedIds.indexOf(c.id)===-1;});
+    writeCustomers(left);selectedIds=[];deleteMode=false;toast('選択したお客様を削除しました');renderCustomers();
+  }
+  function clearHistory(){if(confirm('履歴をすべて削除しますか？お客様一覧は残ります。')){writeHistory([]);toast('履歴を削除しました');renderHistory();}}
+  function showView(view){if(view!=='customers'){deleteMode=false;selectedIds=[];}if(view==='home'){run();return;}if(view==='customers')renderCustomers();if(view==='appts')renderAppts();if(view==='ai')renderAI();if(view==='history')renderHistory();if(view==='settings')renderSettings();}
+  function setDate(y,m,d){document.getElementById('yy').value=y;document.getElementById('mm').value=m;document.getElementById('dd').value=d;}
+  function run(){var y=+document.getElementById('yy').value,m=+document.getElementById('mm').value,d=+document.getElementById('dd').value;if(!y||!m||!d)return;render(profile(y,m,d));}
+  function fill(id,from,to){var s=document.getElementById(id);for(var i=from;i<=to;i++)s.add(new Option(i,i));}
+  fill('yy',1940,2026);fill('mm',1,12);fill('dd',1,31);setDate(1990,3,15);trialStart();
+  migrateOld();
+  document.querySelector('header').addEventListener('click',function(e){
+    var a=e.target.closest?e.target.closest('[data-action]'):null;if(!a)return;
+    if(a.getAttribute('data-action')==='open-settings')showView('settings');
+    if(a.getAttribute('data-action')==='open-notice')openModal('noticeModal');
+  });
+  document.getElementById('out').addEventListener('click',function(e){
+    var a=e.target.closest?e.target.closest('[data-action]'):null;
+    if(a){
+      var act=a.getAttribute('data-action');
+      if(act==='open-memo')openMemo();
+      if(act==='save-card')saveCurrent();
+      if(act==='toggle-delete')toggleDelete();
+      if(act==='clear-history')clearHistory();
+      if(act==='back-customers')renderCustomers();
+      if(act==='update-customer')updateCustomer(a.getAttribute('data-id'));
+      if(act==='consult-customer')consultCustomer(a.getAttribute('data-id'));
+      if(act==='set-plan')setPlan(a.getAttribute('data-plan'));
+      if(act==='cancel-sub'){if(confirm('プロプランを解約しますか？（月額のお支払い停止手続きに進みます）')){if(STRIPE_PORTAL_URL){location.href=STRIPE_PORTAL_URL;}else{alert('解約手続きは vigo.4274g@gmail.com までご連絡ください。確認後、次回更新分から停止いたします。');}}return;}
+      if(act==='go-settings'){renderSettings();return;}
+      if(act==='go-pro')showView('settings');
+      if(act==='toggle-axes'){var ag=document.getElementById('axisGrid'),acv=document.getElementById('axChev');if(ag){var op=ag.style.display!=='none';ag.style.display=op?'none':'grid';if(acv)acv.textContent=op?'▾':'▴';}return;}
+      if(act==='win-yes')markWin('効いた');
+      if(act==='win-no')markWin('イマイチ');
+      if(act==='show-input'){document.querySelector('.in').style.display='';window.scrollTo(0,0);return;}
+      if(act==='toggle-deep'){var dw=document.getElementById('deepWrap'),dcv=document.getElementById('dpChev');if(dw){var od=dw.style.display!=='none';dw.style.display=od?'none':'block';if(dcv)dcv.textContent=od?'▾':'▴';}return;}
+      if(act==='fold'){var fid=a.getAttribute('data-fold'),fe=document.getElementById(fid);if(fe){var of=fe.style.display!=='none';fe.style.display=of?'none':'block';var fch=a.querySelector('.fc');if(fch)fch.textContent=of?'▾':'▴';}return;}
+      if(act==='delete-appt'){deleteAppt(a.getAttribute('data-appt'));return;}
+      if(act==='save-from-history'){saveFromHistory(a.getAttribute('data-id'));return;}
+      if(act==='save-review'){saveReview(a.getAttribute('data-id'));return;}
+      if(act==='send-feedback'){sendFeedback();return;}
+      if(act==='add-appt')addAppt(a.getAttribute('data-id'));
+      if(act==='ai-send'){var iv=(document.getElementById('aiInput')||{}).value||'';if(iv.trim()&&currentProfile){aiMessages.push({role:'me',text:esc(iv)});aiMessages.push({role:'ai',text:'（本番では、このお客さんの性格に合わせてAIがここで回答します）'});renderAI();}}
+      return;
+    }
+    var item=e.target.closest?e.target.closest('.item[data-id]'):null;
+    if(item&&(currentView==='customers'||currentView==='appts')){
+      var id=item.getAttribute('data-id');
+      if(currentView==='customers'&&deleteMode){
+        var i=selectedIds.indexOf(id);if(i>-1)selectedIds.splice(i,1);else selectedIds.push(id);
+        renderCustomers();
+      }else renderCustomerDetail(id);
+      return;
+    }
+    var chip=e.target.closest?e.target.closest('.ai-chip'):null;
+    if(chip&&currentProfile){var cc=chip.getAttribute('data-chip');aiMessages.push({role:'me',text:esc(cc)});aiMessages.push({role:'ai',text:coachReply(cc,currentProfile)});renderAI();return;}
+    var ly=e.target.closest?e.target.closest('.layer[data-ld]'):null;
+    if(ly){var ld=ly.querySelector('.layer-detail');if(ld)ld.hidden=!ld.hidden;ly.classList.toggle('on');return;}
+    var c=e.target.closest?e.target.closest('.cell'):null;if(!c)return;
+    var d=document.getElementById('detail'),v=c.getAttribute('data-v'),l=c.getAttribute('data-l');
+    Array.prototype.forEach.call(document.querySelectorAll('.cell'),function(x){x.classList.remove('on');});
+    if(d.getAttribute('data-cur')===l){d.style.display='none';d.removeAttribute('data-cur');return;}
+    c.classList.add('on');
+    var disp=(c.querySelector('.v')||{}).textContent||v;d.innerHTML='<div class="dl">'+l+'：'+disp+'</div><div class="dx">'+(DETAIL[v]||'')+'</div>';
+    d.style.display='block';d.setAttribute('data-cur',l);
+  });
+  var diagBtn=document.getElementById('diagBtn');if(diagBtn)diagBtn.onclick=function(){currentMemo='';aiMessages=[];currentExtra=getExtra();run();logSearch();};
+  document.querySelector('footer').addEventListener('click',function(e){var t=e.target.closest?e.target.closest('[data-view]'):null;if(t)showView(t.getAttribute('data-view'));});
+  document.getElementById('memoModal').addEventListener('click',function(e){
+    if(e.target.id==='memoModal')closeMemo();
+    var a=e.target.closest?e.target.closest('[data-action]'):null;if(!a)return;
+    if(a.getAttribute('data-action')==='close-memo')closeMemo();
+    if(a.getAttribute('data-action')==='keep-memo'){currentMemo=document.getElementById('memoText').value;closeMemo();toast('メモを反映しました');if(currentView==='home')run();}
+  });
+  document.getElementById('menuModal').addEventListener('click',function(e){
+    if(e.target.id==='menuModal')closeModal('menuModal');
+    var a=e.target.closest?e.target.closest('[data-action]'):null;if(!a)return;
+    var act=a.getAttribute('data-action');
+    if(act==='close-menu')closeModal('menuModal');
+    if(act==='plan-info')menuInfo('plan');
+    if(act==='terms-info')menuInfo('terms');
+    if(act==='privacy-info')menuInfo('privacy');
+    if(act==='help-info')menuInfo('help');
+    if(act==='set-plan')setPlan(a.getAttribute('data-plan'));
+  });
+  document.getElementById('noticeModal').addEventListener('click',function(e){
+    if(e.target.id==='noticeModal')closeModal('noticeModal');
+    var a=e.target.closest?e.target.closest('[data-action]'):null;if(a&&a.getAttribute('data-action')==='close-notice')closeModal('noticeModal');
+  });
+  setActive('home');document.getElementById('out').innerHTML='<div class="view-card empty" style="margin-top:8px;">生年月日を選んで「この生年月日で診断」を押してください。</div>';
+  checkUrlUnlock();
+})();
+</script>
+</body>
+</html>
